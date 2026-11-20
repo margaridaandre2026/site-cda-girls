@@ -74,7 +74,7 @@ export default defineEventHandler(async (event) => {
   try {
     await transporter.sendMail({
       from: `"Site CDA Girls" <${mailUser}>`,
-      to: contactTo,
+      to: contactTo || mailUser,
       replyTo: `"${name.replace(/"/g, "")}" <${email}>`,
       subject: `[Site] ${subject} — ${name}`,
       text: `Nome: ${name}\nEmail: ${email}\nAssunto: ${subject}\n\n${message}`,

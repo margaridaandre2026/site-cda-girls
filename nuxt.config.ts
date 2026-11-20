@@ -26,7 +26,8 @@ export default defineNuxtConfig({
     // só no servidor — definir via NUXT_MAIL_USER / NUXT_MAIL_PASS no .env
     mailUser: "",
     mailPass: "",
-    contactTo: "cdagirls.ti@gmail.com",
+    // destino do "Fale conosco": NUXT_CONTACT_TO, ou NUXT_MAIL_USER se vazio
+    contactTo: "",
     // link privado do grupo (NUXT_JOIN_URL) — só no servidor
     joinUrl: "",
   },
