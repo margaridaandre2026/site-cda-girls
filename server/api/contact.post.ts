@@ -1,5 +1,3 @@
-import nodemailer from "nodemailer";
-
 const SUBJECTS = ["Parceria", "Participação", "Informações", "Outro"];
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -57,34 +55,36 @@ export default defineEventHandler(async (event) => {
   }
   hits.set(ip, [...recent, now]);
 
-  const { mailUser, mailPass, contactTo } = useRuntimeConfig(event);
-  if (!mailUser || !mailPass) {
-    console.error("[contacto] NUXT_MAIL_USER / NUXT_MAIL_PASS não definidos");
+  const { mailUser, mailPass, mailFrom, contactTo } =
+    useRuntimeConfig(event);
+  const to = contactTo || mailUser;
+  if (!mailPass || !to) {
+    console.error("[contacto] NUXT_MAIL_PASS / NUXT_MAIL_USER não definidos");
     throw createError({
       statusCode: 500,
       message: "Serviço de email indisponível.",
     });
   }
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: { user: mailUser, pass: mailPass },
-  });
-
   try {
-    await transporter.sendMail({
-      from: `"Site CDA Girls" <${mailUser}>`,
-      to: contactTo || mailUser,
-      replyTo: `"${name.replace(/"/g, "")}" <${email}>`,
-      subject: `[Site] ${subject} — ${name}`,
-      text: `Nome: ${name}\nEmail: ${email}\nAssunto: ${subject}\n\n${message}`,
-      html: `
-        <p><strong>Nome:</strong> ${escapeHtml(name)}</p>
-        <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-        <p><strong>Assunto:</strong> ${escapeHtml(subject)}</p>
-        <hr />
-        <p style="white-space:pre-line">${escapeHtml(message)}</p>
-      `,
+    // envio via API do Resend (https://resend.com/docs/api-reference/emails/send-email)
+    await $fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${mailPass}` },
+      body: {
+        from: mailFrom,
+        to: [to],
+        reply_to: `${name.replace(/["<>]/g, "")} <${email}>`,
+        subject: `[Site] ${subject} — ${name}`,
+        text: `Nome: ${name}\nEmail: ${email}\nAssunto: ${subject}\n\n${message}`,
+        html: `
+          <p><strong>Nome:</strong> ${escapeHtml(name)}</p>
+          <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+          <p><strong>Assunto:</strong> ${escapeHtml(subject)}</p>
+          <hr />
+          <p style="white-space:pre-line">${escapeHtml(message)}</p>
+        `,
+      },
     });
   } catch (err) {
     console.error("[contacto] falha no envio", err);

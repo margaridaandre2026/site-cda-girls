@@ -23,9 +23,14 @@ export default defineNuxtConfig({
   },
   css: ["@/assets/css/main.css"],
   runtimeConfig: {
-    // só no servidor — definir via NUXT_MAIL_USER / NUXT_MAIL_PASS no .env
-    mailUser: "",
+    // só no servidor — "Fale conosco" enviado via Resend
+    // NUXT_MAIL_PASS: chave da API (re_...)
     mailPass: "",
+    // NUXT_MAIL_FROM: remetente; sem domínio próprio verificado no Resend,
+    // tem de ser onboarding@resend.dev (só entrega ao email da conta Resend)
+    mailFrom: "Site CDA Girls <onboarding@resend.dev>",
+    // NUXT_MAIL_USER: email da CDA Girls que recebe as mensagens
+    mailUser: "",
     // destino do "Fale conosco": NUXT_CONTACT_TO, ou NUXT_MAIL_USER se vazio
     contactTo: "",
     // link privado do grupo (NUXT_JOIN_URL) — só no servidor
