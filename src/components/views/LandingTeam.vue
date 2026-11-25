@@ -9,7 +9,7 @@
           v-reveal
           class="text-2xl leading-[1.4] font-semibold lg:text-[40px] lg:leading-[1.2]"
         >
-          Conheça a Equipe
+          Conheça a Equipa
         </h2>
         <p
           v-reveal="80"

@@ -14,8 +14,6 @@ export interface Activity {
   description: string;
   image?: string;
   badge?: string;
-  /** Card expandido com botões Ver detalhes / Participar */
-  featured?: boolean;
 }
 
 export interface Testimonial {

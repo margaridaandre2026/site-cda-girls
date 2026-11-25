@@ -31,7 +31,7 @@
 
           <!-- Contactos -->
           <div class="flex flex-col gap-4">
-            <h4 :class="headingCls">Nossos contactos</h4>
+            <h4 :class="headingCls">Os nossos contactos</h4>
             <a :href="`mailto:${CONTACT_EMAIL}`" :class="[linkCls, 'flex items-center gap-2']">
               <img src="/assets/images/icons/mail.svg" alt="" width="24" height="24" class="size-5 lg:size-6" />
               {{ CONTACT_EMAIL }}

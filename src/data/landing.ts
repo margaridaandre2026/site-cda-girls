@@ -10,7 +10,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "Quem somos", href: "#quem-somos" },
   { label: "Actividades", href: "#actividades" },
   { label: "Testemunhos", href: "#testemunhos" },
-  { label: "Nossa equipa", href: "#equipa" },
+  { label: "A nossa equipa", href: "#equipa" },
   { label: "Contactos", href: "#contactos" },
 ];
 
@@ -20,7 +20,7 @@ export const FOOTER_NAV_ITEMS: NavItem[] = [
   { label: "Actividades", href: "#actividades" },
   { label: "Métricas", href: "#metricas" },
   { label: "Testemunhos", href: "#testemunhos" },
-  { label: "Nossa Equipa", href: "#equipa" },
+  { label: "A nossa equipa", href: "#equipa" },
   { label: "Parceiros", href: "#parceiros" },
   { label: "Contactos", href: "#contactos" },
 ];
@@ -31,20 +31,19 @@ export const STATS: Stat[] = [
   { value: "+12", label: "Províncias com membros na comunidade." },
 ];
 
-// Logos dos parceiros (Figma: "Nossos principais parceiros na jornada")
+// Parceiros que já caminharam com a CDA Girls (secção "Veja quem já foram nossos parceiros")
 // TODO: confirmar os links oficiais de cada parceiro
-export const PARTNERS: { name: string; logo: string; width: number; height: number }[] = [
-  { name: "Match", logo: "/assets/images/partners/match.svg", width: 77, height: 23 },
-  { name: "Facebook", logo: "/assets/images/partners/facebook.svg", width: 119, height: 32 },
-  { name: "Instagram", logo: "/assets/images/partners/instagram.svg", width: 91, height: 32 },
-  { name: "Eduon", logo: "/assets/images/partners/eduon.svg", width: 83, height: 22 },
-  { name: "LinkedIn", logo: "/assets/images/partners/linkedin.svg", width: 120, height: 32 },
-  { name: "Google", logo: "/assets/images/partners/google.svg", width: 81, height: 32 },
-  { name: "Discover", logo: "/assets/images/partners/discover.svg", width: 72, height: 12 },
-  { name: "Framer", logo: "/assets/images/partners/framer.svg", width: 97, height: 32 },
-  { name: "Reddit", logo: "/assets/images/partners/reddit.svg", width: 93, height: 32 },
-  { name: "Airbnb", logo: "/assets/images/partners/airbnb.svg", width: 100, height: 32 },
-  { name: "Microsoft", logo: "/assets/images/partners/microsoft.svg", width: 114, height: 32 },
+export const PARTNERS: {
+  name: string;
+  logo: string;
+  width: number;
+  height: number;
+  round?: boolean;
+}[] = [
+  { name: "Acelera Angola", logo: "/assets/images/partners/acelera_angola.jpg", width: 640, height: 226 },
+  { name: "Coding Angola", logo: "/assets/images/partners/coding_angola_logo.jpg", width: 168, height: 96 },
+  { name: "GAVSEC — Pentest & Recuperação de Dados", logo: "/assets/images/partners/gavsec.jpg", width: 398, height: 105 },
+  { name: "Solon — Soluções Online", logo: "/assets/images/partners/solon.jpg", width: 240, height: 240, round: true },
 ];
 
 export const ACTIVITIES: Activity[] = [
@@ -54,14 +53,13 @@ export const ACTIVITIES: Activity[] = [
     description:
       "A CDA organizou a sua primeira actividade entre membros da comunidade…",
     image: "/assets/images/activities/1-figma.jpg",
-    badge: "Hoje, as 18h ao VIVO.",
+    badge: "Hoje, às 18h, ao vivo",
   },
   {
     id: "sou-mulher-ti",
     title: "Primeira edição do projecto Sou Mulher e TI É para mim",
     description:
-      "A WTA organiza um programa dedicado a apoiar mulheres no desenvolvimento de habilidades técnicas e de liderança.\n\nO programa oferece mentorias, workshops, networking e recursos práticos para capacitar participantes a assumir posições de destaque no setor tecnológico e transformar oportunidades em impacto real.",
-    featured: true,
+      "A WTA organiza um programa dedicado a apoiar mulheres no desenvolvimento de habilidades técnicas e de liderança.\n\nO programa oferece mentorias, workshops, networking e recursos práticos para capacitar participantes a assumir posições de destaque no sector tecnológico e transformar oportunidades em impacto real.",
   },
   {
     id: "elasnocode",
@@ -99,7 +97,7 @@ export const TESTIMONIALS: Testimonial[] = [
     role: "UI/UX Designer",
     memberSince: "Membro há 3 anos",
     avatar: "/assets/images/what-they-say/1-figma.jpg",
-    text: "Participar da CDA Girl mudou minha visão sobre tecnologia. Aprendi habilidades valiosas e ganhei confiança para seguir minha carreira no setor tecnológico e conheci pessoas novas e talentosas.",
+    text: "Participar na CDA Girls mudou a minha visão sobre tecnologia. Aprendi habilidades valiosas e ganhei confiança para seguir a minha carreira no sector tecnológico e conheci pessoas novas e talentosas.",
   },
   {
     name: "Marta Luís",

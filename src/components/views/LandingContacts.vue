@@ -12,13 +12,13 @@
           </h2>
           <p class="text-sm leading-[1.6] tracking-[0.2px] lg:text-base lg:tracking-normal">
             Fale connosco para parcerias, informações ou participação nas nossas
-            atividades.
+            actividades.
           </p>
         </div>
 
         <div class="flex flex-col gap-4 lg:gap-8">
           <div class="flex flex-col gap-4">
-            <h3 :class="headingCls">Nossos contactos</h3>
+            <h3 :class="headingCls">Os nossos contactos</h3>
             <a
               :href="`mailto:${CONTACT_EMAIL}`"
               class="group/mail flex items-center gap-2 self-start text-sm leading-[1.6] font-medium tracking-[0.2px] text-ink transition-colors hover:text-secundary-500 lg:text-base lg:leading-[1.25] lg:tracking-normal"
@@ -29,7 +29,7 @@
           </div>
 
           <div class="flex flex-col gap-4">
-            <h3 :class="headingCls">Siga - nos na redes:</h3>
+            <h3 :class="headingCls">Siga-nos nas redes</h3>
             <div class="flex flex-wrap gap-2">
               <a
                 v-for="s in SOCIALS"
@@ -68,13 +68,13 @@
         @submit.prevent="onSubmit"
       >
         <h3 class="text-2xl leading-[1.4] font-semibold text-ink lg:text-[32px] lg:leading-[1.2]">
-          Fale conosco
+          Fale connosco
         </h3>
 
         <div class="flex flex-col gap-4">
           <div class="flex flex-col gap-4 lg:flex-row">
             <div :class="[fieldCls, 'lg:flex-1']">
-              <label for="contact-name" :class="labelCls">Nome *</label>
+              <label for="contact-name" :class="labelCls">Nome <span class="text-red-600" aria-hidden="true">*</span></label>
               <input
                 id="contact-name"
                 v-model="form.name"
@@ -83,7 +83,7 @@
                 autocomplete="name"
                 maxlength="120"
                 required
-                placeholder="Insira seu nome"
+                placeholder="Insira o seu nome"
                 :aria-invalid="!!visibleErrors.name"
                 :aria-describedby="visibleErrors.name ? 'contact-name-error' : undefined"
                 :class="[inputCls, borderCls('name')]"
@@ -95,7 +95,7 @@
               </p>
             </div>
             <div :class="[fieldCls, 'lg:flex-1']">
-              <label for="contact-email" :class="labelCls">Email *</label>
+              <label for="contact-email" :class="labelCls">Email <span class="text-red-600" aria-hidden="true">*</span></label>
               <input
                 id="contact-email"
                 v-model="form.email"
@@ -104,7 +104,7 @@
                 autocomplete="email"
                 maxlength="200"
                 required
-                placeholder="Insira seu email"
+                placeholder="Insira o seu email"
                 :aria-invalid="!!visibleErrors.email"
                 :aria-describedby="visibleErrors.email ? 'contact-email-error' : undefined"
                 :class="[inputCls, borderCls('email')]"
@@ -118,7 +118,7 @@
           </div>
 
           <div :class="fieldCls">
-            <label for="contact-subject" :class="labelCls">Assunto *</label>
+            <label for="contact-subject" :class="labelCls">Assunto <span class="text-red-600" aria-hidden="true">*</span></label>
             <div class="relative">
               <select
                 id="contact-subject"
@@ -131,7 +131,7 @@
                 @blur="touch('subject')"
                 @change="touch('subject')"
               >
-                <option value="" disabled>Seleciona o assunto</option>
+                <option value="" disabled>Seleccione o assunto</option>
                 <option v-for="s in subjects" :key="s" :value="s" class="text-ink">
                   {{ s }}
                 </option>
@@ -151,14 +151,14 @@
           </div>
 
           <div class="flex flex-col gap-4">
-            <label for="contact-message" :class="labelCls">Mensagem *</label>
+            <label for="contact-message" :class="labelCls">Mensagem <span class="text-red-600" aria-hidden="true">*</span></label>
             <textarea
               id="contact-message"
               v-model="form.message"
               name="message"
               maxlength="5000"
               required
-              placeholder="Descreve a mensagem"
+              placeholder="Escreva a sua mensagem"
               :aria-invalid="!!visibleErrors.message"
               :aria-describedby="visibleErrors.message ? 'contact-message-error' : undefined"
               :class="[textareaCls, borderCls('message')]"
@@ -184,7 +184,7 @@
 
         <div aria-live="polite" class="-my-2 empty:hidden lg:-my-4">
           <p v-if="sent" class="rounded-[10px] bg-green-50 px-4 py-2.5 text-xs text-green-700">
-            Mensagem enviada. Obrigado pelo contacto!
+            Mensagem enviada! Vamos responder para o seu email em breve.
           </p>
           <p v-else-if="error" class="rounded-[10px] bg-red-50 px-4 py-2.5 text-xs text-red-700">
             {{ error }}
@@ -255,7 +255,7 @@ const errors = computed<Partial<Record<Field, string>>>(() => {
   if (!form.email.trim()) e.email = "Insira o seu email.";
   else if (!EMAIL_REGEX.test(form.email.trim()))
     e.email = "Insira um email válido (ex.: nome@email.com).";
-  if (!form.subject) e.subject = "Seleciona um assunto.";
+  if (!form.subject) e.subject = "Seleccione um assunto.";
   if (!form.message.trim()) e.message = "Escreva a sua mensagem.";
   return e;
 });

@@ -6,14 +6,15 @@ const WINDOW_MS = 10 * 60 * 1000;
 const MAX_PER_WINDOW = 5;
 const hits = new Map<string, number[]>();
 
-const escapeHtml = (s: string) =>
-  s.replace(
-    /[&<>"']/g,
-    (c) =>
-      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
-        c
-      ]!,
-  );
+// logo do cabeçalho do email (server/assets/email-logo.png), em base64, lido uma vez
+let logoBase64: string | null = null;
+async function getLogoBase64() {
+  if (logoBase64 === null) {
+    const raw = await useStorage("assets:server").getItemRaw("email-logo.png");
+    logoBase64 = raw ? Buffer.from(raw as ArrayBuffer).toString("base64") : "";
+  }
+  return logoBase64;
+}
 
 export default defineEventHandler(async (event) => {
   const body = await readBody<Record<string, unknown>>(event);
@@ -32,14 +33,14 @@ export default defineEventHandler(async (event) => {
   const fields: Record<string, string> = {};
   if (!name) fields.name = "Insira o seu nome.";
   if (!email) fields.email = "Insira o seu email.";
-  else if (!EMAIL_REGEX.test(email)) fields.email = "Insira um email válido.";
-  if (!SUBJECTS.includes(subject)) fields.subject = "Seleciona um assunto.";
+  else if (!EMAIL_REGEX.test(email)) fields.email = "Insira um email válido (ex.: nome@email.com).";
+  if (!SUBJECTS.includes(subject)) fields.subject = "Seleccione um assunto.";
   if (!message) fields.message = "Escreva a sua mensagem.";
 
   if (Object.keys(fields).length) {
     throw createError({
       statusCode: 400,
-      message: "Preencha todos os campos correctamente.",
+      message: "Verifique os campos assinalados e tente novamente.",
       data: { fields },
     });
   }
@@ -50,7 +51,7 @@ export default defineEventHandler(async (event) => {
   if (recent.length >= MAX_PER_WINDOW) {
     throw createError({
       statusCode: 429,
-      message: "Muitas mensagens enviadas. Tente novamente mais tarde.",
+      message: "Já enviou várias mensagens seguidas. Aguarde 10 minutos e tente novamente.",
     });
   }
   hits.set(ip, [...recent, now]);
@@ -62,9 +63,11 @@ export default defineEventHandler(async (event) => {
     console.error("[contacto] NUXT_MAIL_PASS / NUXT_MAIL_USER não definidos");
     throw createError({
       statusCode: 500,
-      message: "Serviço de email indisponível.",
+      message: "O envio não está disponível neste momento. Tente mais tarde ou escreva-nos por email.",
     });
   }
+
+  const logo = await getLogoBase64();
 
   try {
     // envio via API do Resend (https://resend.com/docs/api-reference/emails/send-email)
@@ -77,20 +80,25 @@ export default defineEventHandler(async (event) => {
         reply_to: `${name.replace(/["<>]/g, "")} <${email}>`,
         subject: `[Site] ${subject} — ${name}`,
         text: `Nome: ${name}\nEmail: ${email}\nAssunto: ${subject}\n\n${message}`,
-        html: `
-          <p><strong>Nome:</strong> ${escapeHtml(name)}</p>
-          <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-          <p><strong>Assunto:</strong> ${escapeHtml(subject)}</p>
-          <hr />
-          <p style="white-space:pre-line">${escapeHtml(message)}</p>
-        `,
+        html: contactEmailHtml({ name, email, subject, message }),
+        // logo embutido no email (aparece no lugar de cid:EMAIL_LOGO_CID)
+        attachments: logo
+          ? [
+              {
+                filename: "cda-girls.png",
+                content: logo,
+                content_type: "image/png",
+                content_id: EMAIL_LOGO_CID,
+              },
+            ]
+          : undefined,
       },
     });
   } catch (err) {
     console.error("[contacto] falha no envio", err);
     throw createError({
       statusCode: 502,
-      message: "Não foi possível enviar a mensagem.",
+      message: "Não foi possível enviar a mensagem. Tente novamente dentro de alguns minutos.",
     });
   }
 

@@ -101,7 +101,7 @@
             <p
               class="max-w-[149px] text-base leading-[1.2] font-medium text-ink lg:max-w-[264px] lg:text-2xl"
             >
-              <span class="font-semibold text-secundary-500">+20 Projetos</span>
+              <span class="font-semibold text-secundary-500">+20 Projectos</span>
               que Geraram Impacto
             </p>
           </div>
